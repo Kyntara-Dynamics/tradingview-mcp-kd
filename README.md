@@ -31,12 +31,112 @@ Built on top of the original [tradingview-mcp](https://github.com/tradesdontlie/
 
 Paste this into Claude Code and it will handle everything:
 
-```
-Set up TradingView MCP Jackson for me. 
-Clone https://github.com/LewisWJackson/tradingview-mcp-jackson.git to ~/tradingview-mcp-jackson, run npm install, then add it to my MCP config at ~/.claude/.mcp.json (merge with any existing servers, don't overwrite them). 
-The config block is: { "mcpServers": { "tradingview": { "command": "node", "args": ["/Users/YOUR_USERNAME/tradingview-mcp-jackson/src/server.js"] } } } — replace YOUR_USERNAME with my actual username.
-Then copy rules.example.json to rules.json and open it so I can fill in my trading rules.
-Finally restart and verify with tv_health_check.
+```Text
+Goal:
+Install and configure `tradingview-mcp-kd` for VS Code using the `DevAgentsHome` environment variable as the install root.
+
+Repository:
+https://github.com/Kyntara-Dynamics/tradingview-mcp-kd.git
+
+Install location:
+$env:DevAgentsHome\tradingview-mcp-kd
+
+Requirements:
+- Use PowerShell-compatible commands.
+- Do not overwrite existing configuration or files unless explicitly instructed.
+- Preserve any existing MCP servers and settings.
+- Create timestamped backups before modifying configuration files.
+- Validate JSON before saving configuration changes.
+- Clearly report any missing prerequisites or failed commands.
+
+Steps:
+1. Verify that the following commands are available in PowerShell:
+   - git
+   - node
+   - npm
+   - code
+
+2. Verify that the environment variable `DevAgentsHome` exists:
+   - Read it from `$env:DevAgentsHome`.
+   - Resolve it to an absolute path.
+   - Confirm that the directory exists.
+   - Stop and report an error if it is missing or invalid.
+
+3. Clone the repository:
+   - Target path: `$env:DevAgentsHome\tradingview-mcp-kd`
+   - If the target directory already exists and contains a Git repository, run `git pull`.
+   - If the target directory exists but is not a Git repository, stop and report the conflict.
+   - Otherwise, clone the repository into the target path.
+
+4. Install dependencies:
+   - Change directory to `$env:DevAgentsHome\tradingview-mcp-kd`.
+   - Run `npm install`.
+
+5. Locate the VS Code MCP configuration file:
+   - Check the standard VS Code user settings and MCP configuration locations for Windows.
+   - Prefer the configuration location used by the currently installed VS Code MCP support.
+   - If no MCP configuration exists, create one using valid JSON.
+   - Preserve all existing configuration content.
+
+6. Merge the following MCP server entry into the existing MCP configuration:
+
+
+{
+  "mcpServers": {
+    "traderview": {
+      "command": "node",
+      "args": [
+        "<RESOLVED_DEV_AGENTS_HOME>\\tradingview-mcp-kd\\src\\server.js"
+      ]
+    }
+  }
+}
+
+
+Replace `<RESOLVED_DEV_AGENTS_HOME>` with the resolved absolute value of `$env:DevAgentsHome`.
+
+Important merge rules:
+
+* Do not remove existing MCP servers.
+* Do not overwrite unrelated settings.
+* If a `traderview` server already exists, update only that server entry after creating a backup.
+* Ensure the final file is valid JSON.
+
+7. Back up the MCP configuration file before saving:
+
+   * Use a timestamped filename such as:
+     `mcp-config.backup-YYYYMMDD-HHMMSS.json`
+
+8. Copy rules file:
+
+   * Source: `$env:DevAgentsHome\tradingview-mcp-kd\rules.example.json`
+   * Destination: `$env:DevAgentsHome\tradingview-mcp-kd\rules.json`
+   * If `rules.json` already exists, leave it unchanged and report that it was preserved.
+   * If `rules.example.json` does not exist, report that clearly and continue without creating `rules.json`.
+
+9. Open `rules.json` in VS Code if it exists:
+
+   * Run:
+     `code "$env:DevAgentsHome\tradingview-mcp-kd\rules.json"`
+
+10. Reload VS Code:
+
+* Tell me to run “Developer: Reload Window” from the VS Code Command Palette, or perform the equivalent if available.
+
+11. Verify the setup:
+
+* Attempt to run or invoke the MCP health-check tool exposed by the configured server if possible.
+* If a tool named `tv_health_check` exists, use it.
+* If it cannot be invoked directly from the terminal, explain exactly how to verify it from VS Code’s MCP tools interface.
+
+Deliverables:
+
+* Show the final resolved install path.
+* Show which MCP configuration file was modified.
+* Confirm whether dependencies installed successfully.
+* Confirm whether `rules.json` was created, preserved, or unavailable because `rules.example.json` was missing.
+* Confirm whether the `traderview` MCP server entry was added or updated.
+* Include any errors encountered and the exact next step needed to fix them.
 ```
 
 Or follow the manual steps below.
